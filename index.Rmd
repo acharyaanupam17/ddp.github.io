@@ -1,0 +1,93 @@
+---
+title: "DDP Course Project Pitch"
+author: "Anupam Acharya"
+date: "14/05/2020"
+highlighter: highlight.js
+hitheme: tomorrow
+mode: 
+subtitle: Corona Cases in the World
+framework: io2012
+widgets: []
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+setwd("c:/Users/achar/Documents/DATA SCIENCE/9. Developing Data Products/Course Project/")
+library(plotly)
+library(devtools)
+library(dplyr)
+library(slidify)
+library(slidifyLibraries)
+```
+
+```{r data, eval = TRUE, echo = FALSE, cache = TRUE}
+ download.file("https://covid.ourworldindata.org/data/ecdc/total_cases.csv", "data.csv")
+ data <- read.csv("./data.csv")
+ data[is.na(data)] <- as.numeric("0")
+ data$date <- as.Date(data$date)
+```
+
+## Slide with R Output
+
+- Select as many number of countries. To delete just select and hit "Delete".  
+  The app updates itself to give you the number of Corona Cases in those countries in a chronological order.
+
+```{r corona, echo = FALSE, comment=""}
+head(data[95:100 ,c("date", "China", "United.States", "India", "Iran", "Spain", "Italy")])
+```
+
+--- &twocol
+
+## Features of the Corona Cases App
+
+*** =left
+
+- One stop tool to monitor Corona progression.
+
+- Select upto 210 Countries. 
+  View how Corona has progressed in each country.
+
+- Compare the number and growth of Corona cases among countries 
+
+*** =right
+
+![app](pic.png)
+
+--- &twocol
+
+## Interactive Plot to compare Corona cases across countries
+
+*** =left
+
+- Interactive Map. Choose as many countries as you want.
+
+- Select and Delete from Alphabetically placed countries
+
+*** =right
+
+```{r plot, echo = FALSE, eval = TRUE}
+p <- plot_ly() %>%
+      add_trace(data = data, x = data$date, y =  data[ , c('United.States')], type = "scatter", mode = 'line+markers', name = "United States") %>% 
+      add_trace(x = data[["date"]], y = data[, c('China')],type = 'scatter', mode = 'line+markers', name = "China")%>%
+      add_trace(x = data[["date"]], y = data[, c('India')],type = 'scatter', mode = 'line+markers', name = "India")%>%
+      add_trace(x = data[["date"]], y = data[, c('World')],type = 'scatter', mode = 'line+markers', name = "World")
+p
+```
+
+---
+
+## Concluding Slide
+
+
+- Interesting updates coming soon.
+
+  1. Interactive World Map with updated Corona Cases.
+
+  2. Date select feature to choose date range in which you want to view Corona Cases.
+
+  3. Zoom In and Zoom Out to drive roll-up and roll-down of data. 
+
+  **Download the app immediately to stay updated on the Corona epidemic.**
+  **What are you waiting for!!**
+  
+  Here is the link to the app: https://acharyaanupam.shinyapps.io/corona/
